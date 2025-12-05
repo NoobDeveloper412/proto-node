@@ -18,13 +18,13 @@
 	const nodeTypes = {
 		dialogue: DialogueNode
 	};
-	
+
 	let nodes = $state.raw([]);
 	let edges = $state.raw([]);
 
 	let isFocusOnCanvas = $state(false);
-	let inputBuffer = $state(''); 
-	
+	let inputBuffer = $state('');
+
 	const STORAGE_KEY = 'proto-node-save-v1';
 
 	function saveData() {
@@ -79,8 +79,12 @@
 		};
 		reader.readAsText(file);
 	}
-
 	function handleKeyDown(e) {
+		const targetTag = e.target.tagName.toLowerCase();
+		if (targetTag === 'input' || targetTag === 'textarea' || e.target.isContentEditable) {
+			return;
+		}
+
 		if (!isFocusOnCanvas) return;
 		if (e.key.length > 1) return;
 
@@ -105,10 +109,16 @@
 	<!-- Toolbar -->
 	<div class="h-12 bg-gray-800 text-white flex items-center px-4 gap-4 shadow-md z-50">
 		<span class="font-bold text-yellow-400">PROTO-NODE</span>
-		<button onclick={saveData} class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm">Save State</button>
-		<button onclick={loadData} class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm">Load State</button>
+		<button onclick={saveData} class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm"
+			>Save State</button
+		>
+		<button onclick={loadData} class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm"
+			>Load State</button
+		>
 		<div class="w-[1px] h-6 bg-gray-500 mx-2"></div>
-		<button onclick={exportFile} class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-sm">Export File</button>
+		<button onclick={exportFile} class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-sm"
+			>Export File</button
+		>
 		<label class="bg-green-600 hover:bg-green-500 px-3 py-1 rounded text-sm cursor-pointer">
 			Import File
 			<input type="file" onchange={importFile} class="hidden" accept=".json" />
