@@ -1,5 +1,5 @@
 <script>
-	import { Handle, Position, NodeResizer, NodeResizeControl } from '@xyflow/svelte';
+	import { Handle, Position, NodeResizeControl } from '@xyflow/svelte';
 	import { gameState } from '$lib/store/gameStore.svelte.js';
 	import ResizeHandler from './ResizeHandler.svelte';
 
@@ -47,7 +47,7 @@
 	{selected ? 'border-blue-500 ring-[.5px] ring-blue-200' : 'border-slate-700'}"
 	style="min-width: 400px; width: 100%; min-height: 200px; height: 100%; transition: border-color 0.1s;"
 >
-	<NodeResizeControl minWidth={100} minHeight={5} style="background: transparent;">
+	<NodeResizeControl minWidth={400} minHeight={200} style="background: transparent; border: none;">
 		<ResizeHandler />
 	</NodeResizeControl>
 
@@ -95,14 +95,14 @@
 		</div>
 	</div>
 
+
 	<div
-		class="p-4 flex flex-col gap-3 flex-1 overflow-y-auto nodrag nowheel custom-scrollbar"
+		class="p-4 flex flex-col gap-3 flex-1 overflow-y-auto nodrag nowheel custom-scrollbar left-scrollbar"
 		onwheel={stopWheel}
 	>
 		{#each lineIds as lineId, index (lineId)}
 			{@const lineData = gameState.lines[lineId]}
-
-			<div class="relative group">
+			<div class="relative group ltr-content">
 				<Handle
 					type="target"
 					position={Position.Left}
@@ -133,6 +133,14 @@
 </div>
 
 <style>
+	.left-scrollbar {
+		direction: rtl;
+	}
+
+	.ltr-content {
+		direction: ltr;
+	}
+
 	.custom-scrollbar::-webkit-scrollbar {
 		width: 6px;
 	}
